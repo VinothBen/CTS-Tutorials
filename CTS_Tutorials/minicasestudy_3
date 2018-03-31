@@ -1,0 +1,22 @@
+import java.util.logging.Logger;
+public class EShoppingManager {  
+private final int CARD_LENGH = 16;
+private static final Logger LOG = Logger.getLogger("EShoppingManager"); 
+public String validateUserDetails(String loginId, String password,String creditCardNum) throws EShopException {  
+String status= "FAILURE";   
+if((loginId!=null)&&(password!=null)&& (creditCardNum!=null) && (!(loginId.equals(password)))&&(creditCardNum.matches("[0-9]{16}")))
+{ 
+LOG.info("SUCCESS");
+}   
+else { 
+throw new EShopException(status); 
+}  
+return status;  
+}
+}
+class EShopException extends Exception { 
+private static final long serialVersionUID = -3136470737834584851L; 
+public EShopException(String s)  { 
+System.out.println(s);  
+}
+}

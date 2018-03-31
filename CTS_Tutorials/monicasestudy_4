@@ -1,0 +1,114 @@
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.StringTokenizer;
+
+public class RetailShoppingOrganizer {
+public void processProductDetails(String path) throws FileNotFoundException, IOException {
+String line = null;
+FileReader fileReader = new FileReader(new File(path));
+BufferedReader bufferedReader = new BufferedReader(fileReader);
+Set<String> set = new HashSet<>();
+FileWriter writer1 = new FileWriter(new File(path));
+FileWriter writer2 = new FileWriter(new File(path));
+while((line = bufferedReader.readLine()) != null) {
+StringTokenizer st = new StringTokenizer(line, ",");
+Product product = new Product(st.nextToken(), st.nextToken(), st.nextToken(), st.nextToken(), st.nextToken());
+StringBuilder builder = new StringBuilder();
+builder.append(product.getProductCode()+","+product.getCustomerName()+","
++product.getQuantityPurchased()+","
++","+product.getDateOfPurchase()+","
++product.getTotalCost());
+if(set.contains(product.getProductCode().substring(0, 2))) {
+writer2.write(builder.toString());
+} else {
+set.add(product.getProductCode().substring(0, 2));
+writer1.write(builder.toString());
+}
+}
+bufferedReader.close();
+writer1.close();
+writer2.close();
+}
+public void validateProductDetails(String[] str) throws RetailShoppingException{
+for(int i=0;i<str.length;i++) {
+String line=str[i];
+StringTokenizer st =new StringTokenizer(line, ",");
+String productCode = st.nextToken();
+String customerName = st.nextToken();
+String quantityPurchased = st.nextToken();
+String dateOfPurchase = st.nextToken();
+String totalCost = st.nextToken();
+if(productCode.equals(null) || customerName.equals(null) || quantityPurchased.equals(null) || dateOfPurchase.equals(null) 
+|| totalCost.equals(null) || !(productCode.length()==11) || !productCode.matches("[A-Z]{2}[-]{1}[0-9]{6}")
+|| !dateOfPurchase.matches("[0-9]{2}[-][0-9]{2}[0-9]{4}")) {
+throw new RetailShoppingException("invalid input");
+}
+}
+}
+}
+
+
+class RetailShoppingException extends Exception {
+private static final long serialVersionUID = 1L;
+
+public RetailShoppingException(String message) {
+super(message);
+}
+}
+
+
+class Product {
+String productCode;
+String customerName;
+String quantityPurchased;
+String dateOfPurchase;
+String totalCost;
+public Product(String productCode, String customerName, String quantityPurchased, String dateOfPurchase,
+String totalCost) {
+super();
+this.productCode = productCode;
+this.customerName = customerName;
+this.quantityPurchased = quantityPurchased;
+this.dateOfPurchase = dateOfPurchase;
+this.totalCost = totalCost;
+}
+public Product() {
+super();
+}
+public String getProductCode() {
+return productCode;
+}
+public void setProductCode(String productCode) {
+this.productCode = productCode;
+}
+public String getCustomerName() {
+return customerName;
+}
+public void setCustomerName(String customerName) {
+this.customerName = customerName;
+}
+public String getQuantityPurchased() {
+return quantityPurchased;
+}
+public void setQuantityPurchased(String quantityPurchased) {
+this.quantityPurchased = quantityPurchased;
+}
+public String getDateOfPurchase() {
+return dateOfPurchase;
+}
+public void setDateOfPurchase(String dateOfPurchase) {
+this.dateOfPurchase = dateOfPurchase;
+}
+public String getTotalCost() {
+return totalCost;
+}
+public void setTotalCost(String totalCost) {
+this.totalCost = totalCost;
+}
+}

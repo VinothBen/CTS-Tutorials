@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="LoginDetails">
+ 
+    <resultMap id="result" type="LoginDetails">
+        <result property="name" column="name"/>
+        <result property="password" column="password"/> 
+        <result property="id" column="id"/>   
+    </resultMap>
+ 
+    <select id="selectAll" resultMap="result">
+        SELECT * FROM login_details;
+    </select>
+ 
+    <select id="selectById" parameterType="int" resultMap="result">
+        SELECT * FROM persons WHERE id = #{id}
+    </select>
+ 
+    <insert id="insert" parameterType="LoginDetails" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO persons (name) VALUES (#{name});
+    </insert>
+ 
+    <update id="update" parameterType="LoginDetails">
+        UPDATE persons
+        SET name = #{name}
+        WHERE id = #{id} 
+    </update>
+ 
+    <delete id="delete" parameterType="int">
+        DELETE from persons WHERE id = #{id}
+    </delete>
+</mapper>
